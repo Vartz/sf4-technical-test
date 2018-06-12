@@ -13,3 +13,11 @@ search_users:
 user:
     path: /{name}/comment
     defaults: { _controller: AppBundle:Main:user }
+
+find_comments:
+    path: /{name}/comments/find
+    defaults: { _controller: AppBundle:Main:findComments }
+
+send_comment:
+    path: /{name}/comments/send
+    defaults: { _controller: AppBundle:Main:sendComment }

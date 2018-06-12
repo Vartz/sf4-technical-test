@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\{Request, JsonResponse};
 
 class MainController extends Controller {
 
-	const API_URL = "https://api.github.com/search/users";
+	const API_SEARCH_URL = "https://api.github.com/search/users?q=";
+	const API_USER_URL = "https://api.github.com/users/";
+
+	const USER_AGENT = "Stadline";
 
 	/**
 	* Affiche la page de connexion
@@ -38,14 +41,7 @@ class MainController extends Controller {
     	$data['search'] = $request->get('search');
     	if($data['search']) {
 
-	    	$ch = curl_init();
-	        curl_setopt($ch, CURLOPT_URL, Self::API_URL."?q=".$data['search']);
-	        curl_setopt($ch, CURLOPT_USERAGENT, "Stadline");
-	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-	        $result = curl_exec($ch);
-	        $result = json_decode($result);
-
+	        $result = $this->executeCurl(Self::API_SEARCH_URL.$data['search']);
 	        $data['users'] = $result->items;
 	    }
 
@@ -60,8 +56,43 @@ class MainController extends Controller {
     **/
     public function userAction(Request $request, $name) {
 
-    	$data = array();
-    	return $this->render('default/list_users.html.twig', $data);
+    	$data['user'] = $this->executeCurl(self::API_USER_URL.$name);
+    	return $this->render('default/user.html.twig', $data);
     }
 
+    /**
+    * Récupère les commentaires d'un utilisateur
+    * @param Symfony\Component\HttpFoundation\Request $request
+    * @param string $name
+    * @return Symfony\Component\HttpFoundation\Response
+    **/
+    public function findCommentsAction(Request $request, $name) {
+    	
+    	$data['comments'] = array();
+    	return $this->render('default/comments.html.twig', $data);
+    }
+
+    /**
+    * Valide un commande
+    * @param Symfony\Component\HttpFoundation\Request $request
+    * @param string $name
+    * @return Symfony\Component\HttpFoundation\Response
+    **/
+    public function sendCommentAction(Request $request, $name) {
+    	return new JsonResponse(1);
+    }
+
+    /**
+    * Execute un appel CURL
+    **/
+    private function executeCurl($url) {
+
+    	$ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+	    $result = curl_exec($ch);
+	    return json_decode($result);
+    }
 }
