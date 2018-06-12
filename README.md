@@ -47,3 +47,12 @@ https://api.github.com/search/users
 * Envoyez le lien avec le projet à recrutement@stadline.com. 
 
 **Bonne chance !**
+
+
+
+
+Mise à jour des bundles
+composer install
+
+- Installer les assets
+bin/console assets:install --symlink

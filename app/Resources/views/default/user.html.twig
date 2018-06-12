@@ -23,12 +23,7 @@
 			</div>
 
 			<div class="col-lg-10">
-				<div id="comments" data-load="{{ path('find_comments', {name: user.login}) }}">
-					<div class="alert alert-warning">
-						<i class="fa fa-spinner fa-spin"></i>
-						<strong>Chargement des commentaires en cours...</strong>
-					</div>
-				</div>
+				
 				<form method="post" action="{{ path('send_comment', {name: user.login}) }}" id="new_comment">
 					<div class="box box-solid">
 		            	<div class="box-body">
@@ -52,6 +47,14 @@
 		              	</div>
 				    </div>
 				</form>
+
+				<div id="comments" data-load="{{ path('find_comments', {name: user.login}) }}">
+					<div class="alert alert-warning">
+						<i class="fa fa-spinner fa-spin"></i>
+						<strong>Chargement des commentaires en cours...</strong>
+					</div>
+				</div>
+				
 			</div>
 
 		</div>
