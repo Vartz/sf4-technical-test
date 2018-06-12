@@ -3,7 +3,6 @@
 {% block page_content %}
     
     <form method="post">
-    	<input type="hidden" name="_target_path" value="{{ path('home') }}" />
 	    <div class="row">
 	    	<div class="col-lg-4 col-lg-offset-4">
 	    		<div class="box box-solid">
@@ -12,11 +11,11 @@
 	            	</div>
 	            	<div class="box-body">
 	            		<div class="form-group">
-	                  		<label for="exampleInputEmail1">login</label>
-	                  		<input type="email" class="form-control" name="_username">
+	                  		<label>login</label>
+	                  		<input type="text" class="form-control" name="_username">
 	                	</div>
 	                	<div class="form-group">
-	                  		<label for="exampleInputEmail1">Mot de passe</label>
+	                  		<label>Mot de passe</label>
 	                  		<input type="password" class="form-control" name="_password">
 	                	</div>
 	            	</div>
