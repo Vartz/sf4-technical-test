@@ -5,3 +5,11 @@ home:
 login:
     path: /login
     defaults: { _controller: AppBundle:Main:login }
+
+search_users:
+    path: /ajax/search-users
+    defaults: { _controller: AppBundle:Main:searchUsers }
+    
+user:
+    path: /{name}/comment
+    defaults: { _controller: AppBundle:Main:user }

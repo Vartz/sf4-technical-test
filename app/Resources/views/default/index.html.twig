@@ -1,6 +1,21 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+	<script src="{{ asset('bundles/app/js/index.js') }}"></script>
+{% endblock %}
+
 {% block page_content %}
-    CONTENU
+
+	<div id="loading" class="hidden">
+		<div class="alert alert-warning">
+			<i class="fa fa-spinner fa-spin"></i>
+			<strong>Recherche en cours...</strong>
+		</div>
+	</div>
+
+    <div id="ajax_content">
+
+    </div>
+
 {% endblock %}
     
