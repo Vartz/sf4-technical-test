@@ -1,5 +1,9 @@
 {% for comment in comments %}
-
+	<div class="well">
+		<strong>{{ comment.title }}</strong>
+		<br />
+		{{ comment.content }}
+	</div>
 {% else %}
 	<div class="alert alert-warning">
 		<strong>Aucun commentaire</strong>

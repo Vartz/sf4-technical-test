@@ -74,6 +74,16 @@ class MainController extends Controller {
     public function findCommentsAction(Request $request, $name) {
     	
     	$data['comments'] = array();
+
+    	$result = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
+    	foreach($result->items as $repository) {
+    		$sub = $this->executecurl(str_replace("{/number}", "", $repository->comments_url));
+    		foreach($sub as $comment) {
+
+    			$data['comments'][] = array('title'=>$repository->name, 'content'=>$comment->body);
+    		}
+    	}
+
     	return $this->render('default/comments.html.twig', $data);
     }
 
@@ -84,6 +94,7 @@ class MainController extends Controller {
     * @return Symfony\Component\HttpFoundation\Response
     **/
     public function sendCommentAction(Request $request, $name) {
+    	$form = $request->get('comment');
     	return new JsonResponse(1);
     }
 
@@ -94,6 +105,7 @@ class MainController extends Controller {
 
     	$ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept:application/vnd.github.cloak-preview'));
 	    curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
