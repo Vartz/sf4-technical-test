@@ -6,46 +6,55 @@
 
 {% block page_content %}
 
-	<div class="row">
-		<div class="col-lg-2 text-center">
-			<div class="alert alert-info">
-				<strong>{{ user.login }}</strong>
+	{% if user.login is not defined %}
+		{% if user.message is defined %}
+			<div class="alert alert-danger">
+				{{ user.message }}
 			</div>
-			<img src="{{ user.avatar_url }}" class="col-lg-12">
-		</div>
+		{% endif %}
+	{% else %}
+		<div class="row">
 
-		<div class="col-lg-10">
-			<div id="comments" data-load="{{ path('find_comments', {name: user.login}) }}">
-				<div class="alert alert-warning">
-					<i class="fa fa-spinner fa-spin"></i>
-					<strong>Chargement des commentaires en cours...</strong>
+			<div class="col-lg-2 text-center">
+				<div class="alert alert-info">
+					<strong>{{ user.login }}</strong>
 				</div>
+				<img src="{{ user.avatar_url }}" class="col-lg-12">
 			</div>
-			<form method="post" action="{{ path('send_comment', {name: user.login}) }}" id="new_comment">
-				<div class="box box-solid">
-	            	<div class="box-body">
-						<div class="form-group">
-			                <label>Repository</label>
-			                <select class="form-control" name="comment[repo]" required>
-			                	{% for repository in repositories %}
-			                		<option value="{{ repository.name }}">{{ repository.name }}</option>
-			                	{% endfor %}
-			                </select>
-			            </div>
-			            <div class="form-group">
-			                <label>Commentaire</label>
-			                <textarea rows="10" class="form-control" name="comment[content]" required></textarea>
-			            </div>
-			        </div>
-			        <div class="box-footer text-right">
-	                	<button type="submit" class="btn btn-success">
-	                		<strong>Envoyer</strong>
-	                	</button>
-	              	</div>
-			    </div>
-			</form>
-		</div>
 
-	</div>
+			<div class="col-lg-10">
+				<div id="comments" data-load="{{ path('find_comments', {name: user.login}) }}">
+					<div class="alert alert-warning">
+						<i class="fa fa-spinner fa-spin"></i>
+						<strong>Chargement des commentaires en cours...</strong>
+					</div>
+				</div>
+				<form method="post" action="{{ path('send_comment', {name: user.login}) }}" id="new_comment">
+					<div class="box box-solid">
+		            	<div class="box-body">
+							<div class="form-group">
+				                <label>Repository</label>
+				                <select class="form-control" name="comment[repo]" required>
+				                	{% for repository in repositories %}
+				                		<option value="{{ repository.name }}">{{ repository.name }}</option>
+				                	{% endfor %}
+				                </select>
+				            </div>
+				            <div class="form-group">
+				                <label>Commentaire</label>
+				                <textarea rows="10" class="form-control" name="comment[content]" required></textarea>
+				            </div>
+				        </div>
+				        <div class="box-footer text-right">
+		                	<button type="submit" class="btn btn-success">
+		                		<strong>Envoyer</strong>
+		                	</button>
+		              	</div>
+				    </div>
+				</form>
+			</div>
+
+		</div>
+	{% endif %}
 
 {% endblock %}
