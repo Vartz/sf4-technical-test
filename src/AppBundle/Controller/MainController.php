@@ -9,6 +9,7 @@ class MainController extends Controller {
 
 	const API_SEARCH_URL = "https://api.github.com/search/users?q=";
 	const API_USER_URL = "https://api.github.com/users/";
+	const API_REPOSITORIES_URL = "https://api.github.com/search/repositories?q=user:";
 
 	const USER_AGENT = "Stadline";
 
@@ -57,6 +58,10 @@ class MainController extends Controller {
     public function userAction(Request $request, $name) {
 
     	$data['user'] = $this->executeCurl(self::API_USER_URL.$name);
+
+    	$repositories = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
+    	$data['repositories'] = $repositories->items;
+
     	return $this->render('default/user.html.twig', $data);
     }
 

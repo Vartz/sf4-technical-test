@@ -26,7 +26,11 @@
 	            	<div class="box-body">
 						<div class="form-group">
 			                <label>Repository</label>
-			                <input type="text" class="form-control" name="comment[repo]">
+			                <select class="form-control" name="comment[repo]">
+			                	{% for repository in repositories %}
+			                		<option value="{{ repository.name }}">{{ repository.name }}</option>
+			                	{% endfor %}
+			                </select>
 			            </div>
 			            <div class="form-group">
 			                <label>Commentaire</label>
