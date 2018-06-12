@@ -7,6 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends Controller {
 
+	/**
+	* Affiche la page de connexion
+	**/
+	public function loginAction(Request $request) {
+		return $this->render('default/login.html.twig');
+	}
+
     /**
     * Affiche la HTP
     **/

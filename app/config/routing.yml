@@ -1,3 +1,7 @@
 home:
     path: /
     defaults: { _controller: AppBundle:Main:index }
+
+login:
+    path: /login
+    defaults: { _controller: AppBundle:Main:login }
