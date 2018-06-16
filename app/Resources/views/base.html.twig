@@ -43,7 +43,9 @@
             {# LEFT NAVIGATION #}
             <aside class="main-sidebar">
                 <section class="sidebar">
-                    {{ render(controller('AppBundle:Main:displayLeftNavigation')) }}
+                    {% if app.user %}
+                        {{ render(controller('AppBundle:Main:displayLeftNavigation')) }}
+                    {% endif %}
                 </section>
             </aside>
 

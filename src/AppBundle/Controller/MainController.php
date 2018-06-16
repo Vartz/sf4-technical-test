@@ -57,10 +57,9 @@ class MainController extends Controller {
     **/
     public function userAction(Request $request, $name) {
 
-    	$data['user'] = $this->executeCurl(self::API_USER_URL.$name);
-
     	$repositories = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
     	$data['repositories'] = $repositories->items;
+        $data['user'] = $this->executeCurl(self::API_USER_URL.$name);
 
     	return $this->render('default/user.html.twig', $data);
     }
@@ -68,21 +67,18 @@ class MainController extends Controller {
     /**
     * Récupère les commentaires d'un utilisateur
     * @param Symfony\Component\HttpFoundation\Request $request
-    * @param string $name
+    * @param string $user
+    * @param string $git
     * @return Symfony\Component\HttpFoundation\Response
     **/
-    public function findCommentsAction(Request $request, $name) {
+    public function findCommentsAction(Request $request, $user, $git = null) {
     	
-    	$data['comments'] = array();
+        $manager = $this->getDoctrine()->getManager();
 
-    	$result = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
-    	foreach($result->items as $repository) {
-    		$sub = $this->executecurl(str_replace("{/number}", "", $repository->comments_url));
-    		foreach($sub as $comment) {
+        $search['user_target'] = $user;
+        if($git) $search['git'] = $git;
 
-    			$data['comments'][] = array('title'=>$repository->name, 'content'=>$comment->body);
-    		}
-    	}
+    	$data['comments'] = $manager->getRepository('AppBundle:Comment')->findBy($search);
 
     	return $this->render('default/comments.html.twig', $data);
     }
