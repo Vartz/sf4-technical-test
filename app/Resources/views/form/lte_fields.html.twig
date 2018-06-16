@@ -59,7 +59,7 @@
     {% endif %}
 
     <div class="form-group text-right">
-        <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        <button type="submit" {{ block('button_attributes') }}>
             <strong>
                 {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
             </strong>

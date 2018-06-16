@@ -1,10 +1,10 @@
 $(document).ready(function() {
 	loadComments();
 
-	$('#new_comment').on('submit', function(e) {
+	$("form[name='comment']").on('submit', function(e) {
 		e.preventDefault();
 
-		$.ajax({
+		$.post({
         	url: $(this).attr('action'),
         	data: $(this).serialize(),
         	success: function(response) {
@@ -20,7 +20,7 @@ $(document).ready(function() {
 function loadComments() {
 	var div = $('#comments');
 
-	$.ajax({
+	$.post({
         url: div.data('load'),
         data: $(this).serialize(),
         success: function(view) {

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse};
+use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType as Form;
 
@@ -63,10 +64,18 @@ class MainController extends Controller {
     	$data['repositories'] = $repositories->items;
         $data['user'] = $this->executeCurl(self::API_USER_URL.$name);
 
-        $options['repositories'] = $repositories->items;
-        $options['action'] = $this->generateUrl('send_comment', array('user'=>$name));
+        $session = new Session();
+        $session->set('repositories', $repositories->items);
 
-        $form = $this->createForm(Form::class, new Comment(), $options);
+        $options['repositories'] = $repositories->items;
+        $options['action'] = $this->generateUrl('send_comment');
+        $options['method'] = "POST";
+
+        $comment = new Comment();
+        $comment->setUserSource($this->getUser()->getUsername());
+        $comment->setUserTarget($name);
+
+        $form = $this->createForm(Form::class, $comment, $options);
         $data['form'] = $form->createView();
 
     	return $this->render('default/user.html.twig', $data);
@@ -97,8 +106,27 @@ class MainController extends Controller {
     * @param string $name
     * @return Symfony\Component\HttpFoundation\Response
     **/
-    public function sendCommentAction(Request $request, $name) {
-    	$form = $request->get('comment');
+    public function sendCommentAction(Request $request) {
+
+        $session = new Session();
+        $options['repositories'] = $session->get('repositories');
+
+        $comment = new Comment();
+
+        $form = $this->createForm(Form::class, $comment, $options);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()) {
+            if($form->isValid()) {
+
+                $comment = $form->getData();
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($comment);
+                $manager->flush();
+            }
+        }
+
     	return new JsonResponse(1);
     }
 

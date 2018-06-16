@@ -19,5 +19,5 @@ find_comments:
     defaults: { _controller: AppBundle:Main:findComments, git: null }
 
 send_comment:
-    path: /{user}/comments/send
+    path: /comments/send
     defaults: { _controller: AppBundle:Main:sendComment }

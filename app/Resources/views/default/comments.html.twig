@@ -1,6 +1,9 @@
+<hr />
 {% for comment in comments %}
 	<div class="well">
-		<strong>{{ comment.title }}</strong>
+		<strong>{{ comment.title }}</strong> (par {{ comment.userSource }})
+		<br />
+		<strong class="text-info">Dépôt GIT :</strong> {{ comment.git }}
 		<br />
 		{{ comment.content }}
 	</div>
