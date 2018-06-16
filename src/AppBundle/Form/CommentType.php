@@ -11,15 +11,16 @@ class CommentType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
     	$choices = array();
-    	if($options['repositories']->items)
-    		foreach($options['repositories']->items as $item)
+    	if($options['repositories'])
+    		foreach($options['repositories'] as $item)
     			$choices[$item->name] = $item->name;
 
         $builder->add('title', TextType::class, array('label'=>"Titre"));
+        $builder->add('git', ChoiceType::class, array('label'=>"Dépot GIT", 'choices'=>$choices));
         $builder->add('content', TextareaType::class, array('label'=>"Commentaire"));
         $builder->add('user_source', HiddenType::class);
         $builder->add('user_target', HiddenType::class);
-        $builder->add('git', ChoiceType::class, array('label'=>"Dépot GIT", 'choices'=>$choices));
+        $builder->add('submit', SubmitType::class, array('label'=>"Envoyer"));
     }
 
     public function configureOptions(OptionsResolver $resolver) {

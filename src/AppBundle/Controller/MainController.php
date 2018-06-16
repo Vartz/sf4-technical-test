@@ -63,7 +63,10 @@ class MainController extends Controller {
     	$data['repositories'] = $repositories->items;
         $data['user'] = $this->executeCurl(self::API_USER_URL.$name);
 
-        $form = $this->createForm(Form::class, new Comment(), array('repositories'=>$repositories));
+        $options['repositories'] = $repositories->items;
+        $options['action'] = $this->generateUrl('send_comment', array('user'=>$name));
+
+        $form = $this->createForm(Form::class, new Comment(), $options);
         $data['form'] = $form->createView();
 
     	return $this->render('default/user.html.twig', $data);

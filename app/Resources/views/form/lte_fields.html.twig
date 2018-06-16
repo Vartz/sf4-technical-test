@@ -1,0 +1,69 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{%- block form_row -%}
+    <div class="form-group">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock -%}
+
+{% block text_widget %}
+
+    {% set monetic_text_class = 'form-control' %}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class' : monetic_text_class}) %}
+    {% else %}
+        {% set full_class = attr.class ~ ' ' ~ monetic_text_class %}
+        {% set attr = attr|merge({'class' : full_class}) %}
+    {% endif %}
+
+    <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
+
+{%- block textarea_widget -%}
+
+    {% set monetic_textarea_class = 'form-control' %}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class' : monetic_textarea_class}) %}
+    {% else %}
+        {% set full_class = attr.class ~ ' ' ~ monetic_textarea_class %}
+        {% set attr = attr|merge({'class' : full_class}) %}
+    {% endif %}
+
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+
+    {% set monetic_select_class = 'form-control' %}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class' : monetic_select_class}) %}
+    {% else %}
+        {% set full_class = attr.class ~ ' ' ~ monetic_select_class %}
+        {% set attr = attr|merge({'class' : full_class}) %}
+    {% endif %}
+
+    {{ parent() }}
+
+{%- endblock choice_widget_collapsed -%}
+
+{%- block submit_row -%}
+
+    {% set monetic_button_class = 'btn btn-success' %}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class' : monetic_button_class}) %}
+    {% else %}
+        {% set full_class = attr.class ~ ' ' ~ monetic_button_class %}
+        {% set attr = attr|merge({'class' : full_class}) %}
+    {% endif %}
+
+    <div class="form-group text-right">
+        <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+            <strong>
+                {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
+            </strong>
+        </button>
+    </div>
+
+{%- endblock submit_row -%}
