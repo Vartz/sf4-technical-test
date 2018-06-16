@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse};
+use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType as Form;
 
 class MainController extends Controller {
 
@@ -60,6 +62,9 @@ class MainController extends Controller {
     	$repositories = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
     	$data['repositories'] = $repositories->items;
         $data['user'] = $this->executeCurl(self::API_USER_URL.$name);
+
+        $form = $this->createForm(Form::class, new Comment(), array('repositories'=>$repositories));
+        $data['form'] = $form->createView();
 
     	return $this->render('default/user.html.twig', $data);
     }

@@ -46,7 +46,7 @@ class Comment {
 	public function getTitle()				{ return $this->title; }
 	public function getContent()			{ return $this->content; }
 	public function getUserSource()			{ return $this->user_source; }
-	public function getUserTarger()			{ return $this->user_target; }
+	public function getUserTarget()			{ return $this->user_target; }
 	public function getGit()				{ return $this->git; }
 
 	// SETTERS

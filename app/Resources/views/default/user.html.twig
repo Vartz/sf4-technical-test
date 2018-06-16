@@ -24,31 +24,11 @@
 
 			<div class="col-lg-10">
 				
-				<form method="post" action="{{ path('send_comment', {name: user.login}) }}" id="new_comment">
-					<div class="box box-solid">
-		            	<div class="box-body">
-							<div class="form-group">
-				                <label>Repository</label>
-				                <select class="form-control" name="comment[repo]" required>
-				                	{% for repository in repositories %}
-				                		<option value="{{ repository.name }}">{{ repository.name }}</option>
-				                	{% endfor %}
-				                </select>
-				            </div>
-				            <div class="form-group">
-				                <label>Commentaire</label>
-				                <textarea rows="10" class="form-control" name="comment[content]" required></textarea>
-				            </div>
-				        </div>
-				        <div class="box-footer text-right">
-		                	<button type="submit" class="btn btn-success">
-		                		<strong>Envoyer</strong>
-		                	</button>
-		              	</div>
-				    </div>
-				</form>
+				{{ form_start(form) }}
+					{{ form_rest(form) }}
+				{{ form_end(form) }}
 
-				<div id="comments" data-load="{{ path('find_comments', {name: user.login}) }}">
+				<div id="comments" data-load="{{ path('find_comments', {user: user.login}) }}">
 					<div class="alert alert-warning">
 						<i class="fa fa-spinner fa-spin"></i>
 						<strong>Chargement des commentaires en cours...</strong>
