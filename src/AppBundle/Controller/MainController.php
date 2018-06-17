@@ -16,6 +16,10 @@ class MainController extends Controller {
     * @return Symfony\Component\HttpFoundation\Response
     **/
 	public function loginAction(Request $request) {
+
+        if($this->getUser())
+            return $this->redirectToRoute('home');
+
 		return $this->render('default/login.html.twig');
 	}
 
@@ -46,7 +50,7 @@ class MainController extends Controller {
 
     	$data['users'] = array();
     	$data['search'] = $request->get('search');
-        
+
     	if($data['search'])
 	        $data['users'] = $this->get('api.git')->searchUsers($data['search']);
 

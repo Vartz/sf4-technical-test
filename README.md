@@ -57,18 +57,15 @@ composer install
 - Installer les assets
 bin/console assets:install --symlink
 
+- Création de la BDD
+bin/console doctrine:database:create
+
+- Mise à jour de la BDD
+bin/console doctrine:schema:update --force
+
 # Infos
-Temps passé ~ 3h30
 
-J'ai du faire une petite pause entre 2, ça se verra surement au niveau des commits.
-Mais à part la partie connexion, je n'ai pas vraiment retouché aux fonctionnalités par la suite.
-
-J'ai affiché les commentaires des commits mais je ne suis pas tout à fait sûr que c'est ce qui était demandé.
-Je n'ai pas réussi à trouver de fonction permettant d'ajouter des commentaires (normal j'imagine puisqu'il s'agit des commits), ce qui me fait penser que je me suis peu être trompé de "commentaires" et qu'il fallait peu être ajouter des commentaires en BDD et pas via l'API ?
-
-Du coup la validation du formulaire d'ajout de commentaire n'a pas été terminée.
-J'aurai pu recherche un peu plus longtemps sur l'API mais j'aurai surement depassé les 4h et comme dit précédemment, je ne suis pas sur d'être parti vers le fonctionnement attendu.
-
-Pareil pour l'utilisation de l'API en loggé pour contourner la limitation du nombre d'appel...
-
-Pour gagner un peu de temps, j'ai utilisé le même template pour toutes les pages, ce qui fait que le champs recherche ne fonctionne que sur la HP ;-) 
+UPDATE
+- Création d'une BDD
+- Création d'un formulaire symfony
+- Création d'un service pour les appels API
