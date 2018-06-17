@@ -10,21 +10,19 @@ use AppBundle\Form\CommentType as Form;
 
 class MainController extends Controller {
 
-	const API_SEARCH_URL = "https://api.github.com/search/users?q=";
-	const API_USER_URL = "https://api.github.com/users/";
-	const API_REPOSITORIES_URL = "https://api.github.com/search/repositories?q=user:";
-
-	const USER_AGENT = "Stadline";
-
 	/**
 	* Affiche la page de connexion
-	**/
+	* @param Symfony\Component\HttpFoundation\Request $request
+    * @return Symfony\Component\HttpFoundation\Response
+    **/
 	public function loginAction(Request $request) {
 		return $this->render('default/login.html.twig');
 	}
 
     /**
-    * Affiche la HTP
+    * Affiche la HP
+    * @param Symfony\Component\HttpFoundation\Request $request
+    * @return Symfony\Component\HttpFoundation\Response
     **/
     public function indexAction(Request $request) {
         return $this->render('default/index.html.twig');
@@ -39,15 +37,18 @@ class MainController extends Controller {
         return $this->render('default/left_navigation.html.twig');
     }
 
+    /**
+    * AJAX : affiche la liste des utlilisateurs trouvés
+    * @param Symfony\Component\HttpFoundation\Request $request
+    * @return Symfony\Component\HttpFoundation\Response
+    **/
     public function searchUsersAction(Request $request) {
 
     	$data['users'] = array();
     	$data['search'] = $request->get('search');
-    	if($data['search']) {
-
-	        $result = $this->executeCurl(Self::API_SEARCH_URL.$data['search']);
-	        $data['users'] = $result->items;
-	    }
+        
+    	if($data['search'])
+	        $data['users'] = $this->get('api.git')->searchUsers($data['search']);
 
         return $this->render('default/list_users.html.twig', $data);
     }
@@ -60,14 +61,13 @@ class MainController extends Controller {
     **/
     public function userAction(Request $request, $name) {
 
-    	$repositories = $this->executeCurl(self::API_REPOSITORIES_URL.$name);
-    	$data['repositories'] = $repositories->items;
-        $data['user'] = $this->executeCurl(self::API_USER_URL.$name);
+    	$data['repositories'] = $this->get('api.git')->findRepositories($name);
+        $data['user'] = $this->get('api.git')->findUser($name);
 
         $session = new Session();
-        $session->set('repositories', $repositories->items);
+        $session->set('repositories', $data['repositories']);
 
-        $options['repositories'] = $repositories->items;
+        $options['repositories'] = $data['repositories'];
         $options['action'] = $this->generateUrl('send_comment');
         $options['method'] = "POST";
 
@@ -130,18 +130,4 @@ class MainController extends Controller {
     	return new JsonResponse(1);
     }
 
-    /**
-    * Execute un appel CURL
-    **/
-    private function executeCurl($url) {
-
-    	$ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept:application/vnd.github.cloak-preview'));
-	    curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-	    $result = curl_exec($ch);
-	    return json_decode($result);
-    }
 }
